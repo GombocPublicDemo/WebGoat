@@ -46,13 +46,15 @@ public class SqlInjectionLesson8 implements AssignmentEndpoint {
 
   protected AttackResult injectableQueryConfidentiality(String name, String auth_tan) {
     StringBuilder output = new StringBuilder();
-    String query = "SELECT * FROM table WHERE column = ?";
+    String query = "SELECT * FROM employees WHERE last_name = ? AND auth_tan = ?";
 
     try (Connection connection = dataSource.getConnection()) {
       try {
-        Statement statement =
-            connection.createStatement(
-                ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        PreparedStatement statement =
+            connection.prepareStatement(
+                query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        statement.setString(1, name);
+        statement.setString(2, auth_tan);
         log(connection, query);
         ResultSet results = statement.executeQuery();
 
@@ -62,18 +64,15 @@ public class SqlInjectionLesson8 implements AssignmentEndpoint {
             results.last();
 
             if (results.getRow() > 1) {
-              // more than one record, the user succeeded
               return success(this)
                   .feedback("sql-injection.8.success")
                   .output(output.toString())
                   .build();
             } else {
-              // only one record
               return failed(this).feedback("sql-injection.8.one").output(output.toString()).build();
             }
 
           } else {
-            // no results
             return failed(this).feedback("sql-injection.8.no.results").build();
           }
         } else {
@@ -102,7 +101,7 @@ public class SqlInjectionLesson8 implements AssignmentEndpoint {
     if (results.next()) {
       table.append("<tr>");
       for (int i = 1; i < (numColumns + 1); i++) {
-        html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
+        table.append("<th>").append(resultsMetaData.getColumnName(i)).append("</th>");
       }
       table.append("</tr>");
 
@@ -110,7 +109,7 @@ public class SqlInjectionLesson8 implements AssignmentEndpoint {
       while (results.next()) {
         table.append("<tr>");
         for (int i = 1; i < (numColumns + 1); i++) {
-          html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
+          table.append("<td>").append(results.getString(i)).append("</td>");
         }
         table.append("</tr>");
       }
@@ -120,7 +119,7 @@ public class SqlInjectionLesson8 implements AssignmentEndpoint {
     }
 
     table.append("</table>");
-    return (table.toString());
+    return table.toString();
   }
 
   public static void log(Connection connection, String action) {
@@ -129,10 +128,12 @@ public class SqlInjectionLesson8 implements AssignmentEndpoint {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String time = sdf.format(cal.getTime());
 
-    String query = "SELECT * FROM table WHERE column = ?";
+    String logQuery = "INSERT INTO access_log (time, action) VALUES (?, ?)";
 
     try {
-      Statement statement = connection.createStatement(TYPE_SCROLL_SENSITIVE, CONCUR_UPDATABLE);
+      PreparedStatement statement = connection.prepareStatement(logQuery);
+      statement.setString(1, time);
+      statement.setString(2, action);
       statement.executeUpdate();
     } catch (SQLException e) {
       System.err.println(e.getMessage());

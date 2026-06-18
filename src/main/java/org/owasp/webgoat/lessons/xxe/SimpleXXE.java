@@ -57,7 +57,7 @@ public class SimpleXXE implements AssignmentEndpoint {
         return success(this).build();
       }
     } catch (Exception e) {
-      error = ExceptionUtils.getStackTrace(e);
+      error = "An error occurred processing your request.";
     }
     return failed(this).output(error).build();
   }

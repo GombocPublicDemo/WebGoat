@@ -49,6 +49,9 @@ public class ProfileUploadBase implements AssignmentEndpoint {
 
     try {
       var uploadedFile = new File(uploadDirectory, fullName);
+      if (!uploadedFile.getCanonicalPath().startsWith(uploadDirectory.getCanonicalPath())) {
+        return failed(this).feedback("path-traversal-profile-path-traversal").build();
+      }
       uploadedFile.createNewFile();
       FileCopyUtils.copy(file.getBytes(), uploadedFile);
 

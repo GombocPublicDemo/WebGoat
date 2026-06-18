@@ -62,7 +62,6 @@ public class CrossSiteScriptingLesson5a implements AssignmentEndpoint {
     userSessionData.setValue("xss-reflected1-complete", "false");
     StringBuilder cart = new StringBuilder();
     cart.append("Thank you for shopping at WebGoat. <br />Your support is appreciated<hr />");
-    html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
     cart.append("                             ------------------- <br />");
     cart.append("                               $" + totalSale);
 
