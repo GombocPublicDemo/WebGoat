@@ -39,6 +39,8 @@ class HijackSessionAssignmentTest extends LessonTest {
         .thenReturn(authenticationMock);
 
     Cookie cookie = new Cookie(COOKIE_NAME, "value");
+cookie.setHttpOnly(true);
+
 
     ResultActions result =
         mockMvc.perform(
