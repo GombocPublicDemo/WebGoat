@@ -34,6 +34,8 @@ class SpoofCookieAssignmentTest extends LessonTest {
   @DisplayName("Lesson completed")
   void success() throws Exception {
     Cookie cookie = new Cookie(COOKIE_NAME, "NjI2MTcwNGI3YTQxNGE1OTU2NzQ2ZDZmNzQ=");
+cookie.setHttpOnly(true);
+
 
     ResultActions result =
         mockMvc.perform(
@@ -73,6 +75,8 @@ class SpoofCookieAssignmentTest extends LessonTest {
           + "3.- Valid cookie with not known username sent ")
   void cookieLoginNotSolvedFlow(String cookieValue) throws Exception {
     Cookie cookie = new Cookie(COOKIE_NAME, cookieValue);
+cookie.setHttpOnly(true);
+
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(LOGIN_CONTEXT_PATH)

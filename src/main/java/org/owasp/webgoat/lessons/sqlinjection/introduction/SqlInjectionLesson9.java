@@ -47,7 +47,8 @@ public class SqlInjectionLesson9 implements AssignmentEndpoint {
 
   protected AttackResult injectableQueryIntegrity(String name, String auth_tan) {
     StringBuilder output = new StringBuilder();
-    String queryInjection =
+    // SECURITY(CWE-89/ASVS-V5.3.4): SQL injection risk — this query is built with string concatenation. Replace Statement with PreparedStatement and bind each user-supplied value using setString/setInt/... placeholders.
+String queryInjection =
         "SELECT * FROM employees WHERE last_name = '"
             + name
             + "' AND auth_tan = '"

@@ -34,7 +34,7 @@ public class TokenTest {
             .signWith(io.jsonwebtoken.SignatureAlgorithm.HS512, key)
             .compact();
     log.debug(token);
-    Jwt jwt = Jwts.parser().setSigningKey("qwertyqwerty1234").parse(token);
+    Jwt jwt = Jwts.parser().setSigningKey("qwertyqwerty1234").parseClaimsJws(token);
     jwt =
         Jwts.parser()
             .setSigningKeyResolver(

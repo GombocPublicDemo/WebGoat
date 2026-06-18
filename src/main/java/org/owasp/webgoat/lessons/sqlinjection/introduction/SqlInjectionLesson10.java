@@ -46,7 +46,8 @@ public class SqlInjectionLesson10 implements AssignmentEndpoint {
 
   protected AttackResult injectableQueryAvailability(String action) {
     StringBuilder output = new StringBuilder();
-    String query = "SELECT * FROM access_log WHERE action LIKE '%" + action + "%'";
+    // SECURITY(CWE-89/ASVS-V5.3.4): SQL injection risk — this query is built with string concatenation. Replace Statement with PreparedStatement and bind each user-supplied value using setString/setInt/... placeholders.
+String query = "SELECT * FROM access_log WHERE action LIKE '%" + action + "%'";
 
     try (Connection connection = dataSource.getConnection()) {
       try {

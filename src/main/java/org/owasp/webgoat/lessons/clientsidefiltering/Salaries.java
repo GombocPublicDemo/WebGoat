@@ -39,7 +39,13 @@ public class Salaries {
   @PostConstruct
   public void copyFiles() {
     ClassPathResource classPathResource = new ClassPathResource("lessons/employees.xml");
-    File targetDirectory = new File(webGoatHomeDirectory, "/ClientSideFiltering");
+    File uploadedFile = new File(uploadDirectory, filename);
+String canonicalUploadDir = uploadDirectory.getCanonicalPath();
+String canonicalFilePath = uploadedFile.getCanonicalPath();
+if (!canonicalFilePath.startsWith(canonicalUploadDir + File.separator)) {
+    throw new IOException("Path traversal attempt detected");
+}
+
     if (!targetDirectory.exists()) {
       targetDirectory.mkdir();
     }
@@ -56,7 +62,13 @@ public class Salaries {
   @ResponseBody
   public List<Map<String, Object>> invoke() {
     NodeList nodes = null;
-    File d = new File(webGoatHomeDirectory, "ClientSideFiltering/employees.xml");
+    File uploadedFile = new File(uploadDirectory, filename);
+String canonicalUploadDir = uploadDirectory.getCanonicalPath();
+String canonicalFilePath = uploadedFile.getCanonicalPath();
+if (!canonicalFilePath.startsWith(canonicalUploadDir + File.separator)) {
+    throw new IOException("Path traversal attempt detected");
+}
+
     XPathFactory factory = XPathFactory.newInstance();
     XPath path = factory.newXPath();
     int columns = 5;

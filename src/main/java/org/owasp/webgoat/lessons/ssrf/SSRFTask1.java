@@ -30,14 +30,10 @@ public class SSRFTask1 implements AssignmentEndpoint {
       StringBuilder html = new StringBuilder();
 
       if (url.matches("images/tom\\.png")) {
-        html.append(
-            "<img class=\"image\" alt=\"Tom\" src=\"images/tom.png\" width=\"25%\""
-                + " height=\"25%\">");
+        html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
         return failed(this).feedback("ssrf.tom").output(html.toString()).build();
       } else if (url.matches("images/jerry\\.png")) {
-        html.append(
-            "<img class=\"image\" alt=\"Jerry\" src=\"images/jerry.png\" width=\"25%\""
-                + " height=\"25%\">");
+        html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
         return success(this).feedback("ssrf.success").output(html.toString()).build();
       } else {
         html.append("<img class=\"image\" alt=\"Silly Cat\" src=\"images/cat.jpg\">");

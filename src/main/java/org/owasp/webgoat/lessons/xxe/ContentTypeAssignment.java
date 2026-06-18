@@ -63,7 +63,7 @@ public class ContentTypeAssignment implements AssignmentEndpoint {
           attackResult = success(this).build();
         }
       } catch (Exception e) {
-        String error = ExceptionUtils.getStackTrace(e);
+        String error = "An internal error occurred. Please contact support."
         attackResult = failed(this).feedback("xxe.content.type.feedback.xml").output(error).build();
       }
     }
