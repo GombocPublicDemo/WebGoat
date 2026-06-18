@@ -47,7 +47,13 @@ public class SqlInjectionLesson9 implements AssignmentEndpoint {
 
   protected AttackResult injectableQueryIntegrity(String name, String auth_tan) {
     StringBuilder output = new StringBuilder();
-    String query = "SELECT * FROM table WHERE column = ?";
+    // SECURITY(CWE-89/ASVS-V5.3.4): SQL injection risk — this query is built with string concatenation. Replace Statement with PreparedStatement and bind each user-supplied value using setString/setInt/... placeholders.
+String queryInjection =
+        "SELECT * FROM employees WHERE last_name = '"
+            + name
+            + "' AND auth_tan = '"
+            + auth_tan
+            + "'";
     try (Connection connection = dataSource.getConnection()) {
       // V2019_09_26_7__employees.sql
       int oldMaxSalary = this.getMaxSalary(connection);
@@ -86,7 +92,7 @@ public class SqlInjectionLesson9 implements AssignmentEndpoint {
 
   private int getSqlInt(Connection connection, String query) throws SQLException {
     Statement statement = connection.createStatement(TYPE_SCROLL_SENSITIVE, CONCUR_UPDATABLE);
-    ResultSet results = statement.executeQuery();
+    ResultSet results = statement.executeQuery(query);
     results.first();
     return results.getInt(1);
   }
@@ -109,6 +115,6 @@ public class SqlInjectionLesson9 implements AssignmentEndpoint {
   private ResultSet getEmployeesDataOrderBySalaryDesc(Connection connection) throws SQLException {
     String query = "SELECT * FROM employees ORDER BY salary DESC";
     Statement statement = connection.createStatement(TYPE_SCROLL_SENSITIVE, CONCUR_UPDATABLE);
-    return statement.executeQuery();
+    return statement.executeQuery(query);
   }
 }

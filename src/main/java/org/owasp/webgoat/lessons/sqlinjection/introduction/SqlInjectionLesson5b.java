@@ -42,7 +42,8 @@ public class SqlInjectionLesson5b implements AssignmentEndpoint {
   }
 
   protected AttackResult injectableQuery(String login_count, String accountName) {
-    String query = "SELECT * FROM table WHERE column = ?";
+    // SECURITY(CWE-89/ASVS-V5.3.4): SQL injection risk — this query is built with string concatenation. Replace Statement with PreparedStatement and bind each user-supplied value using setString/setInt/... placeholders.
+String queryString = "SELECT * From user_data WHERE Login_Count = ? and userid= " + accountName;
     try (Connection connection = dataSource.getConnection()) {
       PreparedStatement query =
           connection.prepareStatement(
