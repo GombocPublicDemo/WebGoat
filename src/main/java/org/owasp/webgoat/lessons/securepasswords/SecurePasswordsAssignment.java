@@ -32,48 +32,29 @@ public class SecurePasswordsAssignment implements AssignmentEndpoint {
     Strength strength = zxcvbn.measure(password);
 
     output.append("<b>Your Password: *******</b></br>");
-    output.append("<b>Length: </b>" + password.length() + "</br>");
-    output.append(
-        "<b>Estimated guesses needed to crack your password: </b>"
-            + df.format(strength.getGuesses())
-            + "</br>");
-    output.append(
-        "<div style=\"float: left;padding-right: 10px;\"><b>Score: </b>"
-            + strength.getScore()
-            + "/4 </div>");
+    html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
+    html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
+    html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
     if (strength.getScore() <= 1) {
-      output.append(
-          "<div style=\"background-color:red;width: 200px;border-radius: 12px;float:"
-              + " left;\">&nbsp;</div></br>");
+      html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
     } else if (strength.getScore() <= 3) {
-      output.append(
-          "<div style=\"background-color:orange;width: 200px;border-radius: 12px;float:"
-              + " left;\">&nbsp;</div></br>");
+      html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
     } else {
-      output.append(
-          "<div style=\"background-color:green;width: 200px;border-radius: 12px;float:"
-              + " left;\">&nbsp;</div></br>");
+      html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
     }
-    output.append(
-        "<b>Estimated cracking time: </b>"
-            + calculateTime(
-                (long) strength.getCrackTimeSeconds().getOnlineNoThrottling10perSecond())
-            + "</br>");
-      output.append(
-              "<i>Note:</i> This estimate assumes brute-force attack and does not account for "
-                      + "dictionary or rule-based attacks, which can significantly reduce real-world cracking time "
-                      + "for common phrases.</br>");
+    html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
+      html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
     if (strength.getFeedback().getWarning().length() != 0)
-      output.append("<b>Warning: </b>" + strength.getFeedback().getWarning() + "</br>");
+      html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
     // possible feedback: https://github.com/dropbox/zxcvbn/blob/master/src/feedback.coffee
     // maybe ask user to try also weak passwords to see and understand feedback?
     if (strength.getFeedback().getSuggestions().size() != 0) {
       output.append("<b>Suggestions:</b></br><ul>");
       for (String sug : strength.getFeedback().getSuggestions())
-        output.append("<li>" + sug + "</li>");
+        html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
       output.append("</ul></br>");
     }
-    output.append("<b>Score: </b>" + strength.getScore() + "/4 </br>");
+    html.append("<p>Hello, " + HtmlUtils.htmlEscape(USER_INPUT_1) + "</p>");
 
     if (strength.getScore() >= 4)
       return success(this).feedback("securepassword-success").output(output.toString()).build();
