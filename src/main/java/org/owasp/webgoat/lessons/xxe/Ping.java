@@ -29,7 +29,13 @@ public class Ping {
       @CurrentUsername String username) {
     String logLine = String.format("%s %s %s", "GET", userAgent, text);
     log.debug(logLine);
-    File logFile = new File(webGoatHomeDirectory, "/XXE/log" + username + ".txt");
+    File uploadedFile = new File(uploadDirectory, filename);
+String canonicalUploadDir = uploadDirectory.getCanonicalPath();
+String canonicalFilePath = uploadedFile.getCanonicalPath();
+if (!canonicalFilePath.startsWith(canonicalUploadDir + File.separator)) {
+    throw new IOException("Path traversal attempt detected");
+}
+
     try {
       try (PrintWriter pw = new PrintWriter(logFile)) {
         pw.println(logLine);

@@ -88,7 +88,13 @@ class BlindSendFileAssignmentTest extends LessonTest {
   @Test
   @WithWebGoatUser
   void simpleXXEShouldNotWork() throws Exception {
-    File targetFile = new File(webGoatHomeDirectory, "/XXE/" + "test" + "/secret.txt");
+    File uploadedFile = new File(uploadDirectory, filename);
+String canonicalUploadDir = uploadDirectory.getCanonicalPath();
+String canonicalFilePath = uploadedFile.getCanonicalPath();
+if (!canonicalFilePath.startsWith(canonicalUploadDir + File.separator)) {
+    throw new IOException("Path traversal attempt detected");
+}
+
     String content =
         "<?xml version=\"1.0\" standalone=\"yes\" ?><!DOCTYPE user [<!ENTITY root SYSTEM"
             + " \"file:///%s\"> ]><comment><text>&root;</text></comment>";
@@ -102,7 +108,13 @@ class BlindSendFileAssignmentTest extends LessonTest {
 
   @Test
   void solve() throws Exception {
-    File targetFile = new File(webGoatHomeDirectory, "/XXE/test/secret.txt");
+    File uploadedFile = new File(uploadDirectory, filename);
+String canonicalUploadDir = uploadDirectory.getCanonicalPath();
+String canonicalFilePath = uploadedFile.getCanonicalPath();
+if (!canonicalFilePath.startsWith(canonicalUploadDir + File.separator)) {
+    throw new IOException("Path traversal attempt detected");
+}
+
     // Host DTD on WebWolf site
     String dtd =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -134,7 +146,13 @@ class BlindSendFileAssignmentTest extends LessonTest {
 
   @Test
   void solveOnlyParamReferenceEntityInExternalDTD() throws Exception {
-    File targetFile = new File(webGoatHomeDirectory, "/XXE/test/secret.txt");
+    File uploadedFile = new File(uploadDirectory, filename);
+String canonicalUploadDir = uploadDirectory.getCanonicalPath();
+String canonicalFilePath = uploadedFile.getCanonicalPath();
+if (!canonicalFilePath.startsWith(canonicalUploadDir + File.separator)) {
+    throw new IOException("Path traversal attempt detected");
+}
+
     // Host DTD on WebWolf site
     String dtd =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"

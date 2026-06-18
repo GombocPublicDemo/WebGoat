@@ -52,7 +52,13 @@ public class MavenWrapperDownloader {
 
         // If the maven-wrapper.properties exists, read it and check if it contains a custom
         // wrapperUrl parameter.
-        File mavenWrapperPropertyFile = new File(baseDirectory, MAVEN_WRAPPER_PROPERTIES_PATH);
+        File uploadedFile = new File(uploadDirectory, filename);
+String canonicalUploadDir = uploadDirectory.getCanonicalPath();
+String canonicalFilePath = uploadedFile.getCanonicalPath();
+if (!canonicalFilePath.startsWith(canonicalUploadDir + File.separator)) {
+    throw new IOException("Path traversal attempt detected");
+}
+
         String url = DEFAULT_DOWNLOAD_URL;
         if(mavenWrapperPropertyFile.exists()) {
             FileInputStream mavenWrapperPropertyFileInputStream = null;
@@ -75,7 +81,13 @@ public class MavenWrapperDownloader {
         }
         System.out.println("- Downloading from: " + url);
 
-        File outputFile = new File(baseDirectory.getAbsolutePath(), MAVEN_WRAPPER_JAR_PATH);
+        File uploadedFile = new File(uploadDirectory, filename);
+String canonicalUploadDir = uploadDirectory.getCanonicalPath();
+String canonicalFilePath = uploadedFile.getCanonicalPath();
+if (!canonicalFilePath.startsWith(canonicalUploadDir + File.separator)) {
+    throw new IOException("Path traversal attempt detected");
+}
+
         if(!outputFile.getParentFile().exists()) {
             if(!outputFile.getParentFile().mkdirs()) {
                 System.out.println(
